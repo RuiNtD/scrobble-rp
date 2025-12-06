@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^8.0.2",
+    "@ruintd/standard-utils": "npm:@jsr/ruintd__standard-utils",
     "@standard-schema/spec": "^1.0.0",
     "@standard-schema/utils": "^0.3.0",
     "@std/assert": "npm:@jsr/std__assert",

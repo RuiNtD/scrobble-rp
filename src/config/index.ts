@@ -7,6 +7,7 @@ import { equal } from "@std/assert";
 import * as process from "node:process";
 import chalk from "chalk";
 import { SchemaError } from "@standard-schema/utils";
+import * as ss from "@ruintd/standard-utils";
 
 import Config, { OtherConfig, ButtonType, Provider } from "./V9.ts";
 
@@ -75,11 +76,14 @@ export const lastFmApiKey =
 export const clientID = config.discordClientId || "740140397162135563";
 export default config;
 
-interface MigModule<T extends z.core.$ZodType = z.core.$ZodType> {
-  default: z.core.$ZodType;
-  check?: z.core.$ZodType;
+interface MigModule<T extends StandardSchemaV1 = StandardSchemaV1> {
+  default: StandardSchemaV1;
+  check?: StandardSchemaV1;
   migrate: T;
-  onSuccess?: (oldConf?: z.input<T>, newConf?: z.output<T>) => void;
+  onSuccess?: (
+    oldConf?: StandardSchemaV1.InferInput<T>,
+    newConf?: StandardSchemaV1.InferOutput<T>,
+  ) => void;
 }
 
 async function doMigrate(
@@ -91,12 +95,11 @@ async function doMigrate(
     const oldConf = conf;
 
     if (mig.check) {
-      // const check = !(await standardValidate(mig.check, conf)).issues;
-      const check = (await z.safeParseAsync(mig.check, conf)).success;
+      const check = (await ss.safeParse(mig.check, conf)).success;
       if (!check) continue;
-      conf = await z.parseAsync(mig.migrate, conf);
+      conf = await ss.parse(mig.migrate, conf);
     } else {
-      const out = await z.safeParseAsync(mig.migrate, conf);
+      const out = await ss.safeParse(mig.migrate, conf);
       if (!out.success) continue;
       conf = out.data;
     }
@@ -104,11 +107,4 @@ async function doMigrate(
     if (mig.onSuccess) mig.onSuccess(oldConf, conf);
   }
   return conf;
-}
-
-async function standardValidate<T extends StandardSchemaV1>(
-  schema: T,
-  input: unknown,
-): Promise<StandardSchemaV1.Result<StandardSchemaV1.InferOutput<T>>> {
-  return await schema["~standard"].validate(input);
 }
