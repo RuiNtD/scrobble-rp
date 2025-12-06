@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import * as z from "zod";
 import ConfigV5 from "./V5.ts";
 
 export const Provider = z.enum(["lastfm", "listenbrainz"]);
@@ -36,8 +36,8 @@ export const ConfigV4 = z.object({
 });
 export default ConfigV4;
 
-export const migrate = ConfigV4.transform(
-  (config): z.input<typeof ConfigV5> => ({
+export const migrate = ConfigV4.transform((config) =>
+  ConfigV5.decode({
     ...config,
     _VERSION: 5,
     useNintendoMusicArt: false,

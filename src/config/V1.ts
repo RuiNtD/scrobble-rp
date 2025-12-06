@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import * as z from "zod";
 import ConfigV2 from "./V2.ts";
 
 export const OtherConfig = z.object({
@@ -28,8 +28,8 @@ export const ConfigV1 = z.object({
 });
 export default ConfigV1;
 
-export const migrate = ConfigV1.transform(
-  (config): z.input<typeof ConfigV2> => ({
+export const migrate = ConfigV1.transform((config) =>
+  ConfigV2.decode({
     _VERSION: 2,
     lastFmUsername: config.username,
     shareUsername: config.shareName,

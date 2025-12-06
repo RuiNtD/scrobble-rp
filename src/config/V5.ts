@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import * as z from "zod";
 import ConfigV6 from "./V6.ts";
 
 import { Provider, OtherConfig, ButtonType } from "./V4.ts";
@@ -26,8 +26,8 @@ export const ConfigV5 = z.object({
 });
 export default ConfigV5;
 
-export const migrate = ConfigV5.transform(
-  (config): z.input<typeof ConfigV6> => ({
+export const migrate = ConfigV5.transform((config) =>
+  ConfigV6.decode({
     ...config,
     _VERSION: 6,
     useNintendoMusicFormat: false,

@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import * as z from "zod";
 import ConfigV8 from "./V8.ts";
 
 import { Provider, OtherConfig } from "./V6.ts";
@@ -40,8 +40,8 @@ export const ConfigV7 = z.object({
 });
 export default ConfigV7;
 
-export const migrate = ConfigV7.transform(
-  (config): z.input<typeof ConfigV8> => ({
+export const migrate = ConfigV7.transform((config) =>
+  ConfigV8.decode({
     ...config,
     _VERSION: 8,
     showElapsedTime: true,

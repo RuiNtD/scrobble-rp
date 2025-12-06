@@ -1,4 +1,5 @@
-import { z } from "zod/v4";
+import * as z from "zod";
+import ConfigV9 from "./V9.ts";
 
 import { Provider, OtherConfig, ButtonType } from "./V7.ts";
 export { Provider, OtherConfig, ButtonType };
@@ -28,3 +29,14 @@ export const ConfigV8 = z.object({
   listenBrainzAPIURL: z.string().optional(),
 });
 export default ConfigV8;
+
+export const migrate = ConfigV8.transform((config) =>
+  ConfigV9.decode({
+    ...config,
+    _VERSION: 9,
+    nintendoMusic: {
+      useSongArt: config.useNintendoMusicArt,
+      formatSplatoonArtist: config.useNintendoMusicFormat,
+    },
+  }),
+);

@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import * as z from "zod";
 import ConfigV7 from "./V7.ts";
 
 import { Provider, OtherConfig, ButtonType } from "./V5.ts";
@@ -27,8 +27,8 @@ export const ConfigV6 = z.object({
 });
 export default ConfigV6;
 
-export const migrate = ConfigV6.transform(
-  (config): z.input<typeof ConfigV7> => ({
+export const migrate = ConfigV6.transform((config) =>
+  ConfigV7.decode({
     ...config,
     _VERSION: 7,
     showDuration: false,

@@ -1,4 +1,4 @@
-_VERSION: 8 # Do not touch this line!
+_VERSION: 9 # Do not touch this line!
 
 provider: lastfm # lastfm, listenbrainz
 username: ""
@@ -35,13 +35,17 @@ button2: profile
 # github: "Scrobble Rich Presence"
 # none: No button
 
-# Uses per-song art from Nintendo Music API instead of album art
-useNintendoMusicArt: true
-# Formats Nintendo Music tracks into something like this:
-#   Calamari Inkantation
-#   by Squid Sisters
-#   Splatoon
-useNintendoMusicFormat: true
+# Special integration with Nintendo Music
+# Requires songs to be scrobbled as by "Nintendo Co., Ltd."
+# Works with Pano Scrobbler
+nintendoMusic:
+  # Uses per-song art instead of album art
+  useSongArt: true
+  # Formats Splatoon tracks into something like this:
+  #   Calamari Inkantation
+  #   by Squid Sisters
+  #   Splatoon
+  formatSplatoonArtist: true
 
 # Disable when another app's Rich Presence is detected
 # Requires joining https://discord.gg/lanyard

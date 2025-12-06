@@ -8,7 +8,7 @@ import * as process from "node:process";
 import chalk from "chalk";
 import { SchemaError } from "@standard-schema/utils";
 
-import Config, { OtherConfig, ButtonType, Provider } from "./V8.ts";
+import Config, { OtherConfig, ButtonType, Provider } from "./V9.ts";
 
 export { Config, OtherConfig, ButtonType, Provider };
 export type Config = z.infer<typeof Config>;
@@ -49,6 +49,7 @@ try {
     await import("./V5.ts"),
     await import("./V6.ts"),
     await import("./V7.ts"),
+    await import("./V8.ts"),
   ]);
   config = Config.parse(newConf);
 

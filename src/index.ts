@@ -107,7 +107,10 @@ async function activity(): Promise<SetActivity | undefined | null> {
   }
 
   if (isNintendo) {
-    if (config.useNintendoMusicFormat) {
+    if (
+      config.nintendoMusic.formatSplatoonArtist &&
+      track.album?.startsWith("Splatoon")
+    ) {
       ret.state = undefined;
       const nameParts = track.name.split(" / ");
       if (nameParts.length == 2) {
@@ -115,7 +118,7 @@ async function activity(): Promise<SetActivity | undefined | null> {
         ret.state = `by ${nameParts[1]}`;
       }
     }
-    if (config.useNintendoMusicArt) {
+    if (config.nintendoMusic.useSongArt) {
       const thumb = await getNintendoThumbnail(track);
       if (thumb) ret.largeImageKey = thumb;
     }
