@@ -4,6 +4,7 @@ import { select, confirm } from "@inquirer/prompts";
 import fs from "fs-extra";
 import { $ } from "bun";
 import EnterPrompt from "./lib/EnterPrompt";
+import { consola } from "consola";
 
 const run = StartupRun.create("Scrobble Rich Presence", {
   command: "bun",
@@ -12,9 +13,9 @@ const run = StartupRun.create("Scrobble Rich Presence", {
 
 while (true) {
   console.clear();
-  console.log(chalk.bold.underline("Scrobble Rich Presence"));
-  console.log();
-  console.log(
+  consola.log(chalk.bold.underline("Scrobble Rich Presence"));
+  consola.log("");
+  consola.info(
     "Run on startup is currently:",
     (await run.isEnabled()) ? chalk.green("Enabled") : chalk.red("Disabled"),
   );
@@ -43,23 +44,25 @@ while (true) {
 
   console.clear();
   switch (choice) {
-    case "enable":
+    case "enable": {
       await run.enable();
       await run.start();
       break;
-    case "disable":
+    }
+    case "disable": {
       await run.stop();
       await run.disable();
       break;
-    case "update":
+    }
+    case "update": {
       if (!Bun.which("git")) {
-        console.log(chalk.red("Git not found"));
+        consola.error(chalk.red("Git not found"));
         await pause();
         break;
       }
       if (!(await fs.exists(".git"))) {
-        console.log(chalk.red("Not in a Git repository"));
-        console.log(
+        consola.error(chalk.red("Not in a Git repository"));
+        consola.log(
           "Please clone the GitHub repo instead of using Download ZIP",
         );
         await pause();
@@ -72,30 +75,31 @@ while (true) {
       await run.stop();
 
       try {
-        console.log(chalk.gray("Updating..."));
+        consola.start(chalk.gray("Updating..."));
         await $`git pull`;
 
-        console.log(chalk.gray("Installing dependencies..."));
+        consola.log(chalk.gray("Installing dependencies..."));
         await $`bun install`;
 
         if (await run.isEnabled()) {
-          console.log(chalk.gray("Restarting process..."));
+          consola.log(chalk.gray("Restarting process..."));
           await run.start();
         }
 
-        console.log(
+        consola.success(
           chalk.bold.green("Updated!"),
           "Make sure Bun is up to date.",
         );
-        console.log("Manager will now close");
+        consola.log("Manager will now close");
         await pause();
         process.exit();
       } catch (e) {
-        console.log(chalk.bold.red("Failed to update"));
-        console.log(e);
+        consola.error(chalk.bold.red("Failed to update"));
+        consola.log(e);
         await pause();
-        break;
       }
+      break;
+    }
     case "quit":
       process.exit();
   }

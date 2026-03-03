@@ -1,4 +1,4 @@
-import listenProvider, { type Track } from "./listenProvider/index.ts";
+import listenProvider from "./listenProvider/index.ts";
 import { StatusDisplayType, type SetActivity } from "@xhayper/discord-rpc";
 import {
   type GatewayActivityButton,
@@ -83,7 +83,7 @@ async function activity(): Promise<SetActivity | undefined | null> {
     detailsUrl: songlink,
     state: track.artist ? `by ${track.artist}` : undefined,
 
-    largeImageKey: track.image || "album",
+    largeImageKey: track.image || "placeholderalbum",
     largeImageText: track.album,
 
     buttons: [

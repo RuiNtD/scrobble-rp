@@ -3,7 +3,7 @@ import {
   WindowCanvas,
   mainloop,
 } from "https://deno.land/x/dwm@0.3.4/ext/canvas.ts";
-import { genPlayImage } from "./nowPlayGen.ts";
+import { genPlayImage } from "../src/nowPlayGen.ts";
 
 const renderImg: Image = new Image();
 

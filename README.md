@@ -34,7 +34,7 @@ Run `start` to start Scrobble Rich Presence.
 ## Special Thanks!
 
 - [Tabler Icons](https://tabler.io/icons)
-- [SVG to PNG](https://github.com/vincerubinetti/svg-to-png)
+- [SVG to PNG](https://vincerubinetti.github.io/svg-to-png/)
 
 [lanyard]: https://github.com/Phineas/lanyard
 [lanyard discord]: https://discord.gg/lanyard

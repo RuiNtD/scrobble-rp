@@ -4,14 +4,19 @@
   "type": "module",
   "scripts": {
     "start": "bun src/index.ts",
+    "dev": "bun --watch src/index.ts",
     "manager": "bun src/manager.ts",
     "generateExample": "bun src/config/template.ts",
-    "gui": "bun run src/gui.ts",
-    "dev": "bun run --watch src/index.ts"
+    "fmt": "bunx prettier --write .",
+    "lint": "bunx eslint --fix"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tsconfig/bun": "^1.0.10",
-    "@types/bun": "^1.3.10"
+    "@types/bun": "^1.3.10",
+    "eslint": "^10.0.2",
+    "globals": "^17.4.0",
+    "typescript-eslint": "^8.56.1"
   },
   "peerDependencies": {
     "typescript": "^5.9.3"
@@ -31,6 +36,7 @@
     "discord-api-types": "^0.38.40",
     "es-toolkit": "^1.45.0",
     "expiry-map": "^2.0.0",
+    "jiti": "^2.6.1",
     "luxon": "^3.7.2",
     "p-memoize": "^8.0.0",
     "prettier": "^3.8.1",
