@@ -1,5 +1,5 @@
 import listenProvider, { type Track } from "./listenProvider/index.ts";
-import { type SetActivity } from "@xhayper/discord-rpc";
+import { StatusDisplayType, type SetActivity } from "@xhayper/discord-rpc";
 import {
   type GatewayActivityButton,
   ActivityType,
@@ -70,10 +70,16 @@ async function activity(): Promise<SetActivity | undefined | null> {
   if (isNintendo) stat += chalk.dim(` (Nintendo Music)`);
   status(stat);
 
+  const songlink =
+    track.trackURL &&
+    ((await tryResolveSongLink(track.trackURL)) || track.trackURL);
   const ret: SetActivity = {
     // TY ADVAITH <3
     type: ActivityType.Listening,
+    statusDisplayType: StatusDisplayType.DETAILS,
+
     details: track.name,
+    detailsUrl: songlink,
     state: track.artist ? `by ${track.artist}` : undefined,
 
     largeImageKey: track.image || "album",

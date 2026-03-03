@@ -5,6 +5,7 @@
   "scripts": {
     "start": "bun src/index.ts",
     "manager": "bun src/manager.ts",
+    "generateExample": "bun src/config/template.ts",
     "gui": "bun run src/gui.ts",
     "dev": "bun run --watch src/index.ts"
   },

@@ -93,6 +93,7 @@ disableOnPresence:
   custom: # Application IDs or names (case-insensitive)
     # "" is required for IDs
 ${extraIndent(YAML.stringify(config.disableOnPresence.custom, null, 2), 4)}
+
 ${line("lastFmApiKey", "")}
 ${line("discordClientId", "")}
 ${line("listenBrainzAPIURL", "http://localhost:8100")}

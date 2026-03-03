@@ -17,8 +17,8 @@ showRemainingTime: true
 
 # Buttons to show on the Rich Presence
 # NOTE: You can't see the buttons on your own profile
-button1: songlink
-button2: profile
+button1: profile
+button2: github
 # song: "View Song" (links to the scrobble provider)
 # songlink:
 #   If possible, links to Songlink/Odesli
@@ -52,6 +52,7 @@ disableOnPresence:
     # "" is required for IDs
     - "12345678901234567890"
     - Apple Music
+
 # lastFmApiKey: ""
 # discordClientId: ""
 # listenBrainzAPIURL: http://localhost:8100

@@ -8,8 +8,8 @@ smallImage: profile
 showElapsedTime: true
 showRemainingTime: true
 
-button1: songlink
-button2: profile
+button1: profile
+button2: github
 
 nintendoMusic:
   useSongArt: true
