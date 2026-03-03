@@ -52,7 +52,7 @@ try {
   const newFile = await parseTemplate(config);
 
   if (!isEqual(oldConfV, newConfV)) {
-    const bakFile = `config.yml.bak`;
+    const bakFile = "config.yml.bak";
     await Bun.write("config.yml", newFile);
     log.info("Updated config.yml");
     await Bun.write(bakFile, oldFile);
