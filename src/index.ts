@@ -6,7 +6,7 @@ import {
 } from "discord-api-types/v10";
 import config, { ButtonType } from "./config/index.ts";
 import { hasOtherActivity } from "./otherIDs.ts";
-import { setActivity } from "./discord.ts";
+import { getDiscordUser, setActivity } from "./discord.ts";
 import { isTruthy } from "./lib/helper.ts";
 import * as Time from "@std/datetime/constants";
 import { getNintendoThumbnail, NintendoArtist } from "./lib/nintendoMusic.ts";
@@ -195,10 +195,11 @@ async function getButton(
         url: user.url,
       };
     }
-    case "github":
-      return {
-        label: "Scrobble Rich Presence",
-        url: "https://github.com/RuiNtD/lastfm-rp",
-      };
+    case "github": {
+      const url = "https://github.com/RuiNtD/lastfm-rp";
+      if ((await getDiscordUser()).id == "157917665162297344")
+        return { url, label: "Scrobble RP Made by Me 💛" };
+      return { url, label: "Scrobble Rich Presence" };
+    }
   }
 }
