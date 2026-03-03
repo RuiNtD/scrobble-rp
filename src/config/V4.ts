@@ -6,9 +6,7 @@ export const Provider = z.enum(["lastfm", "listenbrainz"]);
 export const OtherConfig = z.object({
   any: z.boolean().default(false),
   listening: z.boolean().default(false),
-  custom: z
-    .array(z.string('"" are required for app IDs in disableOnPresence.custom'))
-    .default([]),
+  custom: z.array(z.string('"" are required for app IDs')).default([]),
 });
 
 export const ButtonType = z

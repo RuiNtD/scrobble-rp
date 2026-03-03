@@ -1,0 +1,26 @@
+_VERSION: 9
+
+provider: lastfm
+username: ""
+
+smallImage: profile
+
+showElapsedTime: true
+showRemainingTime: true
+
+button1: songlink
+button2: profile
+
+nintendoMusic:
+  useSongArt: true
+  formatSplatoonArtist: true
+
+disableOnPresence:
+  any: false
+  listening: true
+  custom:
+    - "12345678901234567890"
+    - Apple Music
+# lastFmApiKey: ""
+# discordClientId: ""
+# listenBrainzAPIURL: http://localhost:8100

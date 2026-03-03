@@ -1,19 +1,20 @@
-import { z } from "zod/v4-mini";
-import * as YAML from "yaml";
+import { YAML } from "bun";
 import * as fs from "node:fs/promises";
 import { getLogger } from "../lib/logger.ts";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
-import { equal } from "@std/assert";
 import * as process from "node:process";
 import chalk from "chalk";
-import { SchemaError } from "@standard-schema/utils";
 import * as ss from "@ruintd/standard-utils";
-
-import Config, { OtherConfig, ButtonType, Provider } from "./V9.ts";
+import parseTemplate from "./template.ts";
+import {
+  Config,
+  OtherConfig,
+  ButtonType,
+  Provider,
+  Migrations,
+} from "./const.ts";
 
 export { Config, OtherConfig, ButtonType, Provider };
-export type Config = z.infer<typeof Config>;
-export type OtherConfig = z.infer<typeof OtherConfig>;
 
 const log = getLogger("Config");
 
@@ -27,9 +28,9 @@ try {
   //
 }
 
-let file: string;
+let oldFile: string;
 try {
-  file = await fs.readFile("config.yml", "utf-8");
+  oldFile = await Bun.file("config.yml").text();
 } catch {
   log.error(
     "Config not found. Please create config.yml, using config.example.yml as reference.",
@@ -39,34 +40,21 @@ try {
 
 let config: Config;
 try {
-  const oldConf = YAML.parse(file);
+  const oldConf = YAML.parse(oldFile);
 
-  // MIGRATIONS
-  const newConf = await doMigrate(oldConf, [
-    await import("./V1.ts"),
-    await import("./V2.ts"),
-    await import("./V3.ts"),
-    await import("./V4.ts"),
-    await import("./V5.ts"),
-    await import("./V6.ts"),
-    await import("./V7.ts"),
-    await import("./V8.ts"),
-  ]);
-  config = Config.parse(newConf);
+  const newConf = await doMigrate(oldConf, Migrations);
+  config = await ss.parse(Config, newConf);
+  const newFile = await parseTemplate(config);
 
-  if (!equal(oldConf, newConf)) {
-    await Bun.write("config.yml", YAML.stringify(config));
-    await Bun.write("config.yml.bak", file);
-    log.info("Migrated config.yml to new version");
+  if (oldFile != newFile) {
+    await Bun.write("config.yml", newFile);
+    await Bun.write("config.yml.bak", oldFile);
+    log.info("Updated config.yml");
     log.info("Old config backed up to config.yml.bak");
   }
 } catch (e) {
-  if (e instanceof z.core.$ZodError) {
-    log.error(chalk.bold("Error parsing config"));
-    log.error(z.prettifyError(e));
-  } else if (e instanceof SchemaError) {
-    log.error(chalk.bold("Error parsing config"));
-    log.error(e.message + "\n" + YAML.stringify(e.issues));
+  if (e instanceof ss.SchemaError) {
+    log.error(chalk.bold("Error parsing config") + "\n" + ss.prettifyError(e));
   } else log.error("Error parsing config.yml", e);
   process.exit();
 }

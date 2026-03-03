@@ -1,7 +1,19 @@
 import * as z from "zod";
 
-import { Provider, OtherConfig, ButtonType } from "./V8.ts";
-export { Provider, OtherConfig, ButtonType };
+import { Provider, ButtonType } from "./V8.ts";
+export { Provider, ButtonType };
+
+export const OtherConfig = z.object({
+  any: z.boolean().default(false),
+  listening: z.boolean().default(false),
+  custom: z
+    .array(z.string('"" are required for app IDs'))
+    .prefault([])
+    .transform((v) => {
+      if (v.length == 0) return ["12345678901234567890"];
+      return v;
+    }),
+});
 
 export const check = z.object({ _VERSION: z.literal(9) });
 export const ConfigV9 = z.object({
