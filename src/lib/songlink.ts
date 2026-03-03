@@ -1,4 +1,7 @@
 import axios from "axios";
+import ExpiryMap from "expiry-map";
+import pMemoize from "p-memoize";
+import * as Time from "@std/datetime/constants";
 import z from "zod/v4";
 
 const httpUrl = z.url({
@@ -10,9 +13,7 @@ const Links = z.object({
   pageUrl: httpUrl,
 });
 
-export async function tryResolveSongLink(
-  url: string,
-): Promise<string | undefined> {
+async function _tryResolveSongLink(url: string): Promise<string | undefined> {
   if (httpUrl.safeParse(url).error) return;
 
   const resp = await axios.get("https://api.song.link/v1-alpha.1/links", {
@@ -25,3 +26,6 @@ export async function tryResolveSongLink(
 
   return Links.parse(resp.data).pageUrl;
 }
+export const tryResolveSongLink = pMemoize(_tryResolveSongLink, {
+  cache: new ExpiryMap(Time.HOUR),
+});
