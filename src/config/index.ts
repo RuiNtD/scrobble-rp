@@ -1,6 +1,5 @@
 import { YAML } from "bun";
 import * as fs from "node:fs/promises";
-import { getLogger } from "../lib/logger.ts";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 import * as process from "node:process";
 import chalk from "chalk";
@@ -15,10 +14,11 @@ import {
   AnyConfig,
 } from "./const.ts";
 import { isEqual } from "es-toolkit";
+import { consola } from "consola";
 
 export { Config, OtherConfig, ButtonType, Provider };
 
-const log = getLogger("Config");
+const log = consola.withTag("Config");
 
 try {
   const json = JSON.parse(await fs.readFile("config.json", "utf-8"));
@@ -45,8 +45,8 @@ try {
   const oldConf = YAML.parse(oldFile);
   const newConf = await doMigrate(oldConf, Migrations);
 
-  const oldConfV = ss.parse(AnyConfig, oldConf);
-  const newConfV = ss.parse(AnyConfig, newConf);
+  const oldConfV = await ss.parse(AnyConfig, oldConf);
+  const newConfV = await ss.parse(AnyConfig, newConf);
 
   config = await ss.parse(Config, newConf);
   const newFile = await parseTemplate(config);

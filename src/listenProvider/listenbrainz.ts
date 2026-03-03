@@ -1,18 +1,18 @@
 import config from "../config/index.ts";
 import chalk from "chalk";
-import { getLogger } from "../lib/logger.ts";
 import { z } from "zod/v4";
 import axios, { AxiosError } from "axios";
 import type { ListenProvider, Track } from "./index.ts";
 import * as Time from "@std/datetime/constants";
 import pMemoize from "p-memoize";
 import ExpiryMap from "expiry-map";
+import { consola } from "consola";
 
 const api = axios.create({
   baseURL: config.listenBrainzAPIURL || "https://api.listenbrainz.org",
   headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
 });
-const log = getLogger(
+const log = consola.withTag(
   // chalk.hex("#353070")("Listen") + chalk.hex("#eb743b")("Brainz")
   chalk.hex("#eb743b")("ListenBrainz"),
 );
@@ -21,7 +21,7 @@ const { username } = config;
 let isReady = false;
 function ready() {
   if (isReady) return;
-  log.info(chalk.green("First check successful!"));
+  log.success(chalk.green("First check successful!"));
   isReady = true;
 }
 

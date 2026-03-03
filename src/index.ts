@@ -7,7 +7,6 @@ import {
 import config, { ButtonType } from "./config/index.ts";
 import { hasOtherActivity } from "./otherIDs.ts";
 import { setActivity } from "./discord.ts";
-import { getLogger } from "./lib/logger.ts";
 import { isTruthy } from "./lib/helper.ts";
 import * as Time from "@std/datetime/constants";
 import { getNintendoThumbnail, NintendoArtist } from "./lib/nintendoMusic.ts";
@@ -15,8 +14,7 @@ import chalk from "chalk";
 import { tryResolveSongLink } from "./lib/songlink.ts";
 import { lookupMetadata } from "./listenProvider/listenbrainz.ts";
 import { getTrackInfo as getLastFmTrackInfo } from "./listenProvider/lastFm.ts";
-
-const log = getLogger();
+import { consola } from "consola";
 
 let lastStatus = {
   status: "",
@@ -50,7 +48,7 @@ export function status(status = "") {
       status,
       date: new Date(),
     };
-    if (status) log.log(status);
+    if (status) consola.log(status);
   }
 }
 
@@ -124,7 +122,7 @@ async function activity(): Promise<SetActivity | undefined | null> {
     }
   }
 
-  log.debug("activity", ret);
+  consola.debug("activity", ret);
   return ret;
 }
 

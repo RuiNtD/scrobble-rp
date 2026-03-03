@@ -1,24 +1,24 @@
 import config, { lastFmApiKey as apiKey } from "../config/index.ts";
 import chalk from "chalk";
-import { getLogger } from "../lib/logger.ts";
 import { z } from "zod/v4";
 import axios, { AxiosError } from "axios";
 import type { ListenProvider, Track, User } from "./index.ts";
 import * as Time from "@std/datetime/constants";
 import pMemoize from "p-memoize";
 import ExpiryMap from "expiry-map";
+import { consola } from "consola";
 
 const api = axios.create({
   baseURL: "https://ws.audioscrobbler.com/2.0/",
   headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
 });
-const log = getLogger(chalk.hex("#ba0000")("Last.fm"));
+const log = consola.withTag(chalk.hex("#ba0000")("Last.fm"));
 const { username } = config;
 
 let isReady = false;
 function ready() {
   if (isReady) return;
-  log.info(chalk.green("First check successful!"));
+  log.success(chalk.green("First check successful!"));
   isReady = true;
 }
 

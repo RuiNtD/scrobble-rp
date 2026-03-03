@@ -15,6 +15,7 @@
         "@xhayper/discord-rpc": "^1.3.0",
         "axios": "^1.13.2",
         "chalk": "^5.6.2",
+        "consola": "^3.4.2",
         "discord-api-types": "^0.38.36",
         "es-toolkit": "^1.45.0",
         "expiry-map": "^2.0.0",
@@ -134,6 +135,8 @@
     "combined-stream": ["combined-stream@1.0.8", "", { "dependencies": { "delayed-stream": "~1.0.0" } }, "sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg=="],
 
     "command-join": ["command-join@3.0.0", "", { "dependencies": { "@improved/node": "^1.0.0" } }, "sha512-areSrJRrc9cbaA+Hxhs+QP4y+lkWXClAyOmxd79NvGEqUw1uLLaMKa2Tmuc1AkaER9XzmGTzpFWzwucYottMKw=="],
+
+    "consola": ["consola@3.4.2", "", {}, "sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA=="],
 
     "delayed-stream": ["delayed-stream@1.0.0", "", {}, "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ=="],
 

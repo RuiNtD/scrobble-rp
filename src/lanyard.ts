@@ -2,10 +2,9 @@ import { ActivityType } from "discord-api-types/v10";
 import { z } from "zod/v4";
 import { getDiscordUser } from "./discord.ts";
 import chalk from "chalk";
-import { getLogger } from "./lib/logger.ts";
-import { delay } from "@std/async";
+import { consola } from "consola";
 
-const log = getLogger(chalk.hex("#d7bb87")("Lanyard"));
+const log = consola.withTag(chalk.hex("#d7bb87")("Lanyard"));
 
 export { ActivityType };
 
@@ -87,7 +86,7 @@ function connect() {
         const { d } = msg;
         if (isEmpty(d)) {
           if (!firstWarn)
-            log.error(chalk.redBright("Please join discord.gg/lanyard"));
+            log.error(chalk.red("Please join discord.gg/lanyard"));
           firstWarn = true;
           lanyardCache = undefined;
         } else if (isData(d)) {
@@ -107,17 +106,17 @@ function connect() {
   };
 
   ws.onopen = () => {
-    log.info(chalk.greenBright("Connected"));
+    log.success(chalk.bold.green("Connected!"));
   };
 
   ws.onclose = async () => {
-    log.warn(chalk.redBright("Disconnected"));
+    log.warn(chalk.red("Disconnected"));
     await Bun.sleep(5000);
     connect();
   };
 
   ws.onerror = async (e) => {
-    log.error(chalk.redBright("Error"), e);
+    log.error(chalk.red("Error"), e);
     ws.onclose = null;
     ws.close();
     await Bun.sleep(5000);
@@ -145,7 +144,7 @@ async function addID(id: string) {
 }
 
 export async function getLanyard() {
-  while (!gotFirstData) await delay(0);
+  while (!gotFirstData) await Bun.sleep(0);
 
   const { id } = await getDiscordUser();
   await addID(id);
