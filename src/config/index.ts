@@ -12,7 +12,9 @@ import {
   ButtonType,
   Provider,
   Migrations,
+  AnyConfig,
 } from "./const.ts";
+import { isEqual } from "es-toolkit";
 
 export { Config, OtherConfig, ButtonType, Provider };
 
@@ -41,16 +43,20 @@ try {
 let config: Config;
 try {
   const oldConf = YAML.parse(oldFile);
-
   const newConf = await doMigrate(oldConf, Migrations);
+
+  const oldConfV = ss.parse(AnyConfig, oldConf);
+  const newConfV = ss.parse(AnyConfig, newConf);
+
   config = await ss.parse(Config, newConf);
   const newFile = await parseTemplate(config);
 
-  if (oldFile != newFile) {
+  if (!isEqual(oldConfV, newConfV)) {
+    const bakFile = `config.yml.bak`;
     await Bun.write("config.yml", newFile);
-    await Bun.write("config.yml.bak", oldFile);
     log.info("Updated config.yml");
-    log.info("Old config backed up to config.yml.bak");
+    await Bun.write(bakFile, oldFile);
+    log.info(`Old config backed up to ${bakFile}`);
   }
 } catch (e) {
   if (e instanceof ss.SchemaError) {

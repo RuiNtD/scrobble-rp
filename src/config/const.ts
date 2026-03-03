@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+export const AnyConfig = z.object({ _VERSION: z.number() });
 import Config, { OtherConfig, ButtonType, Provider } from "./V9.ts";
 export const Migrations = [
   await import("./V1.ts"),
