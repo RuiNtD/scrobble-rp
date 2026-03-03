@@ -71,8 +71,9 @@ async function activity(): Promise<SetActivity | undefined | null> {
   status(stat);
 
   const songlink =
-    track.trackURL &&
-    ((await tryResolveSongLink(track.trackURL)) || track.trackURL);
+    (track.trackURL && (await tryResolveSongLink(track.trackURL))) ||
+    track.trackURL ||
+    track.url;
   const ret: SetActivity = {
     // TY ADVAITH <3
     type: ActivityType.Listening,
@@ -140,28 +141,17 @@ async function getButton(
 
   switch (type) {
     case "song": {
-      if (track.url)
-        return {
-          label: "View Song",
-          url: track.url,
-        };
-      return;
+      const url = track.url;
+      if (!url) return;
+      return { label: "View Song", url };
     }
     case "songlink": {
-      if (track.trackURL) {
-        const songlink = await tryResolveSongLink(track.trackURL);
-        if (songlink)
-          return {
-            label: "View Song",
-            url: songlink,
-          };
-      }
-      if (track.url)
-        return {
-          label: "View Song",
-          url: track.url,
-        };
-      return;
+      const url =
+        (track.trackURL && (await tryResolveSongLink(track.trackURL))) ||
+        track.trackURL ||
+        track.url;
+      if (!url) return;
+      return { label: "View Song", url };
     }
     case "song-lastfm": {
       if (!track.name) return;
