@@ -1,5 +1,5 @@
 {
-  "name": "lastfm-rp",
+  "name": "scrobble-rp",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
