@@ -6,6 +6,7 @@
     "start": "bun src/index.ts",
     "dev": "bun --watch src/index.ts",
     "manager": "bun src/manager.ts",
+    "build": "bun src/build.ts",
     "generateExample": "bun src/config/template.ts",
     "fmt": "bunx prettier --write .",
     "lint": "bunx eslint --fix"
