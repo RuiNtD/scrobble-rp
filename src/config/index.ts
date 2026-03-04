@@ -15,6 +15,7 @@ import {
 } from "./const.ts";
 import { isEqual } from "es-toolkit";
 import { consola } from "consola";
+import EnterPrompt from "../lib/EnterPrompt.ts";
 
 export { Config, OtherConfig, ButtonType, Provider };
 
@@ -37,6 +38,7 @@ try {
   log.error(
     "Config not found. Please create config.yml, using config.example.yml as reference.",
   );
+  await EnterPrompt({});
   process.exit();
 }
 
