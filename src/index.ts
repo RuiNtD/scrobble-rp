@@ -21,10 +21,14 @@ let lastStatus = {
   date: new Date(),
 };
 
-setActivity(await activity());
-setInterval(async () => {
-  setActivity(await activity());
-}, Time.SECOND);
+while (true) {
+  try {
+    setActivity(await activity());
+  } catch (err) {
+    consola.error("Failed to update:", err);
+  }
+  await Bun.sleep(Time.SECOND);
+}
 
 /*
 try {
